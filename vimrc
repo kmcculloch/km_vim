@@ -87,18 +87,25 @@ set nowrapscan "keep searches from wrapping around the end of the file
 set hidden "keep buffers loaded when they are abandoned
 set confirm "prompt for save before unloading a modified buffer
 
-let g:miniBufExplBuffersNeeded=0 "start automatically
+let g:miniBufExplBuffersNeeded=0 "start mini buffer automatically
 let g:miniBufExplBRSplit=0 "put mini buffer on top
 " }}}
 
 " Windows {{{
-set equalalways
-
-" Use the arrow keys to move quickly between windows
-noremap <Left> <c-w><c-h>
-noremap <Right> <c-w><c-l>
-noremap <Down> <c-w><c-j>
-noremap <Up> <c-w><c-k>
+" Use the arrow keys to move quickly between windows, with possible overrides
+" for particular buffer types
+autocmd BufEnter * call EnterBuffer()
+function EnterBuffer()
+  noremap <buffer> <left> <c-w><c-h>
+  noremap <buffer> <right> <c-w><c-l>
+  noremap <buffer> <down> <c-w><c-j>
+  noremap <buffer> <up> <c-w><c-k>
+  if strpart(bufname("%"), 0, 10) ==# "NERD_tree_"
+    " in the nerd tree, use the up and down arrow keys for list navigation
+    noremap <buffer> <down> <down>
+    noremap <buffer> <up> <up>
+  endif
+endfunction
 
 " Use the leader with arrows to toss a new window in the arrow's direction
 nnoremap <Leader><Up> :aboveleft sp<CR>
@@ -108,6 +115,9 @@ nnoremap <Leader><Right> :belowright vsp<CR>
 
 " Equalize window sizes
 nnoremap <Leader>w= <c-w>=
+" Set a given window width to the proper width for code editing
+" 87 = 80 chars + 5 for line numbers + 2 for marks
+nnoremap <Leader>wf :vertical resize 87<CR>:set winfixwidth<CR>
 " }}}
 
 " Status bar {{{
@@ -129,6 +139,8 @@ set numberwidth=5 "use 5 spaces for left-hand number column
 
 " Gruvbox {{{
 " note: see line 207 of gruvbox.vim for some custom overrides I've made
+" TODO do the overrides in .vimrc instead
+" TODO make a shell script for gruvbox colors in the terminal
 set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
