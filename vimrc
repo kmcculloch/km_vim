@@ -2,6 +2,17 @@
 " to inspect local environment:
 " http://vim.wikia.com/wiki/Displaying_the_current_Vim_environment
 
+function! OpenHelpInCurrentWindow(topic)
+  view $VIMRUNTIME/doc/help.txt
+  setl filetype=help
+  setl buftype=help
+  setl nomodifiable
+  exe 'keepjumps help ' . a:topic
+endfunction
+
+command! -nargs=? -complete=help Help call OpenHelpInCurrentWindow(<q-args>)
+nnoremap <silent> <leader>h :view +1 $VIMRUNTIME/doc/help.txt
+
 " GLOBAL BEHAVIOR {{{
 
 " Compatibility mode {{{
@@ -29,7 +40,7 @@ map <Space> <Leader>
 set timeout timeoutlen=3000 "set timeout gap for multi-key operations to 3 sec
 set showcmd
 
-" use the tab key for escape operations
+" use the tab key for escape operations and vice-versa
 " in normal mode, cancel any prefix keys (eg. # for count)
 nnoremap <Tab> <Esc>
 " in visual mode, cancel any selection (gV prevents automatic reselection)
@@ -38,8 +49,8 @@ vnoremap <Tab> <Esc>gV
 onoremap <Tab> <Esc>
 " exit insert mode and restore cursor position (no move left)
 inoremap <Tab> <Esc>`^
-" insert an actual-to-goodness tab when in insert mode
-"inoremap \<Tab> <Tab>
+" in insert mode, use the Esc key for tabs
+inoremap <Esc> <Tab>
 " turn off K (does a sudden help topic lookup that is distracting)
 nnoremap K <Nop>
 
@@ -83,22 +94,57 @@ set nowrapscan "keep searches from wrapping around the end of the file
 
 " LAYOUT AND APPEARANCE {{{
 
+" Fancy layout
+function! FancyLayout()
+  :silent only
+  :MBEOpen
+  :NERDTree
+  3wincmd w
+  :vsplit
+  :vsplit
+  :vertical resize 87
+  :set winfixwidth
+  4wincmd w
+  :vertical resize 87
+  :set winfixwidth
+  3wincmd w
+  echo 'fancy layout'
+endfunction
+nnoremap <Leader>fl :call FancyLayout()<cr>
+
 " Buffers {{{
 set hidden "keep buffers loaded when they are abandoned
 set confirm "prompt for save before unloading a modified buffer
 
-let g:miniBufExplBuffersNeeded=0 "start automatically
 let g:miniBufExplBRSplit=0 "put mini buffer on top
+"let g:miniBufExplBuffersNeeded=0 "start mini buffer automatically
+
+" use shift-arrow to scroll quickly through buffers
+" note that bp and bn are abbreviated to expand to MiniBufExpl commands
+nnoremap <s-left> :bp<CR>
+nnoremap <s-right> :bn<CR>
 " }}}
 
 " Windows {{{
-set equalalways
-
-" Use the arrow keys to move quickly between windows
-noremap <Left> <c-w><c-h>
-noremap <Right> <c-w><c-l>
-noremap <Down> <c-w><c-j>
-noremap <Up> <c-w><c-k>
+" Use the arrow keys to move quickly between windows, with possible overrides
+" for particular buffer types
+autocmd BufEnter * call EnterBuffer()
+function! EnterBuffer()
+  noremap <buffer> <left> <c-w><c-h>
+  noremap <buffer> <right> <c-w><c-l>
+  noremap <buffer> <down> <c-w><c-j>
+  noremap <buffer> <up> <c-w><c-k>
+  if strpart(bufname("%"), 0, 10) ==# "NERD_tree_"
+    " in the nerd tree, use the up and down arrow keys for list navigation
+    noremap <buffer> <down> <down>
+    noremap <buffer> <up> <up>
+  endif
+  if bufname("%") ==# "-MiniBufExplorer-"
+    "echo 'hi there'
+    "<c-w><c-j>
+    "execute "normal \<C-W>\<C-J>"
+  endif
+endfunction
 
 " Use the leader with arrows to toss a new window in the arrow's direction
 nnoremap <Leader><Up> :aboveleft sp<CR>
@@ -108,12 +154,17 @@ nnoremap <Leader><Right> :belowright vsp<CR>
 
 " Equalize window sizes
 nnoremap <Leader>w= <c-w>=
+" Set a given window width to the proper width for code editing
+" 87 = 80 chars + 5 for line numbers + 2 for marks
+nnoremap <Leader>wf :vertical resize 87<CR>:set winfixwidth<CR>
 " }}}
 
 " Status bar {{{
 set laststatus=2 "always show the status line
 set statusline=%n: "buffer number
-set statusline+=%f "path to file, relative to directory where vim was launched
+"set statusline+=%f "path to file, relative to directory where vim was launched
+set statusline+=%t "filename only
+set statusline+=%m "modified flag
 set statusline+=\ %y "filetype in brackets
 set statusline+=%= "right justify rest of status line
 set statusline+=%l/%L "current line/total lines
@@ -129,6 +180,8 @@ set numberwidth=5 "use 5 spaces for left-hand number column
 
 " Gruvbox {{{
 " note: see line 207 of gruvbox.vim for some custom overrides I've made
+" TODO do the overrides in .vimrc instead
+" TODO make a shell script for gruvbox colors in the terminal
 set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
@@ -146,7 +199,7 @@ filetype indent on "source .vim/indent
 syntax on "source .vim/syntax
 
 " when cursor is on word, use F10 to get info about syntax highlighting
-noremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+noremap <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 " }}}
 
 " Tabs {{{
@@ -218,6 +271,21 @@ noremap <Leader>i ^i
 
 " insert a single character at the cursor point
 nnoremap <Leader>r i_<Esc>r
+
+" change contents of parentheses
+nnoremap <Leader>cp vi(c
+
+" change contents of brackets
+nnoremap <Leader>cb vi[c
+
+" change contents of curly braces
+nnoremap <Leader>cc vi{c
+
+" change contents of (double) quotes
+nnoremap <Leader>cd vi"c
+
+" change contents of (single) quotes
+nnoremap <Leader>cs vi'c
 " }}}
 
 " }}}
@@ -240,6 +308,20 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 cabbrev nt NERDTree
 cabbrev ntt NERDTreeToggle
 cabbrev nb Bookmark
+" }}}
+
+" MiniBufExplorer {{{
+cabbrev bn MBEbn
+cabbrev bp MBEbp
+cabbrev bf MBEbf
+cabbrev bb MBEbb
+cabbrev bd MBEbd
+cabbrev bw MBEbw
+cabbrev bun MBEbun
+" }}}
+
+" Vim Notes {{{
+let g:notes_tab_indents = 0
 " }}}
 
 " }}}
