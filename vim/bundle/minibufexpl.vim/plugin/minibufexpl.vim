@@ -1418,7 +1418,9 @@ function! <SID>DeleteBuffer(action,bang,...)
 
     let t:miniBufExplAutoUpdate = l:saveAutoUpdate
 
-    call <SID>UpdateExplorer(l:actBuf)
+    "KM 11/1/14 -- turn off this functionality because we're not actually
+    "using the explorer
+    "call <SID>UpdateExplorer(l:actBuf)
   endfor
 
   call <SID>DEBUG('Leaving DeleteBuffer()',10)
