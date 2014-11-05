@@ -1,4 +1,3 @@
-" vim: foldmethod=marker
 
 " MOVEMENT MAPPINGS {{{
 " use the leader to move between windows
@@ -37,7 +36,7 @@ function! FancyLayoutInit() "{{{
   vertical resize 87
   set winfixwidth
   " prevent jumping directly to NerdTree
-  nnoremap <Leader>h <Nop>
+  nnoremap <Leader>h :FancyLayoutNerdTree<CR>
   let g:fancy_loaded = 1
 endfunction
 
@@ -52,14 +51,14 @@ function! FancyLayoutEnter() "{{{
   if g:fancy_loaded
     " resize windows
     if &ft ==# "nerdtree"
-      vertical resize 35
+      vertical resize 50 
     else
       vertical resize 87
     endif
 
     " prevent direct jumping to NerdTree
     if winnr() == 2
-      nnoremap <Leader>h <Nop>
+      nnoremap <Leader>h :FancyLayoutNerdTree<CR>
     else
       nnoremap <Leader>h <C-W><C-H>
     endif
@@ -81,7 +80,6 @@ autocmd WinLeave * :call FancyLayoutLeave()
 "}}}
 function! FancyLayoutGoto(window) "{{{
   if g:fancy_loaded
-    "execute a:window . 'wincmd w'
     if a:window ==# 'tree'
       1wincmd w
     elseif a:window ==# 'main'
@@ -101,10 +99,8 @@ endif
 function! FancyLayoutNerdTree() "{{{
   if g:fancy_loaded
     " Go to our destination window so NerdTree files open there
-    "3wincmd w
     call FancyLayoutGoto('pre')
     " Go to NerdTree
-    "1wincmd w
     call FancyLayoutGoto('tree')
   endif
 endfunction
@@ -115,7 +111,6 @@ endif
 "}}}
 function! FancyLayoutHelp(topic) "{{{
   if g:fancy_loaded
-    "4wincmd w
     call FancyLayoutGoto('notes')
     if &ft ==# 'help'
       execute 'help ' . a:topic
@@ -124,6 +119,8 @@ function! FancyLayoutHelp(topic) "{{{
       5wincmd w
       quit
     endif
+  else
+    execute 'help ' . a:topic
   endif
 endfunction
 
@@ -131,19 +128,9 @@ if !exists(':FancyLayoutHelp')
   command! -nargs=1 FancyLayoutHelp call FancyLayoutHelp(<f-args>)
 endif
 "}}}
-" COMMAND LINE ABBREVIATIONS {{{
-" Initialize Fancy Layout
-cabbrev fi FancyLayoutInit
-cabbrev <expr> fi ((getcmdtype() == ':' && getcmdpos() <= 3)? 'FancyLayoutInit' : 'fi')
 
-" Go to particular windows
-cabbrev <expr> fm ((getcmdtype() == ':' && getcmdpos() <= 3)? 'FancyLayoutGoto main' : 'fm')
-cabbrev <expr> fp ((getcmdtype() == ':' && getcmdpos() <= 3)? 'FancyLayoutGoto pre' : 'fp')
-cabbrev <expr> fn ((getcmdtype() == ':' && getcmdpos() <= 3)? 'FancyLayoutGoto notes' : 'fn')
-cabbrev <expr> ft ((getcmdtype() == ':' && getcmdpos() <= 3)? 'FancyLayoutNerdTree' : 'ft')
 
-" Open a help topic in the notes window
-cabbrev <expr> fh ((getcmdtype() == ':' && getcmdpos() <= 3)? 'FancyLayoutHelp' : 'fh')
-"}}}
 
 ":Note
+
+" vim: foldmethod=marker

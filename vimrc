@@ -200,56 +200,37 @@ let g:airline#extensions#tabline#buffer_nr_format = '%s:'
 " NERDTREE ================================================================= {{{
 
 "let g:NERDTreeWinSize=28
-"cabbrev nt NERDTree
-"cabbrev ntt NERDTreeToggle
-cabbrev nb Bookmark
+"call cabbrevplus#Cabbrev('nt', 'NERDTree')
+"call cabbrevplus#Cabbrev('ntt', 'NERDTreeToggle')
+call cabbrevplus#Cabbrev('nb', 'Bookmark')
+let NERDTreeShowHidden=1
 
 " }}}
 " MINIBUFEXPL ============================================================== {{{
+
+" Note: minibufexpl.vim patched on line 1423
 
 "let g:miniBufExplBRSplit=0 "put mini buffer on top
 "let g:miniBufExplBuffersNeeded=1000 "suppress buffer window
 let g:miniBufExplAutoStart=0 "only open manually
 
-" Note: minibufexpl.vim patched on line 1423
-
 " expand various buffer movement commands to their MiniBufExpl equivalents
-cabbrev bn MBEbn
-cabbrev bp MBEbp
-cabbrev bf MBEbf
-cabbrev bb MBEbb
-cabbrev bd MBEbd
-cabbrev bw MBEbw
-cabbrev bun MBEbun
+call cabbrevplus#Cabbrev('bn', 'MBEbn')
+call cabbrevplus#Cabbrev('bp', 'MBEbp')
+call cabbrevplus#Cabbrev('bf', 'MBEbf')
+call cabbrevplus#Cabbrev('bb', 'MBEbb')
+call cabbrevplus#Cabbrev('bd', 'MBEbd')
+call cabbrevplus#Cabbrev('bw', 'MBEbw')
+call cabbrevplus#Cabbrev('bun', 'MBEbun')
 
 " delete buffers rather than quitting windows
-cabbrev q MBEbd
-cabbrev wq w
+call cabbrevplus#Cabbrev('q', 'MBEbd')
+call cabbrevplus#Cabbrev('wq', 'w')
 
 " use shift-arrow to scroll quickly through buffers
 " note that bp and bn are abbreviated to expand to MiniBufExpl commands
 nnoremap <s-left> :bp<CR>
 nnoremap <s-right> :bn<CR>
-
-" Use the arrow keys to move quickly between windows, with possible overrides
-" for particular buffer types
-"autocmd BufEnter * call EnterBuffer()
-"function! EnterBuffer()
-  "noremap <buffer> <left> <c-w><c-h>
-  "noremap <buffer> <right> <c-w><c-l>
-  "noremap <buffer> <down> <c-w><c-j>
-  "noremap <buffer> <up> <c-w><c-k>
-  "if strpart(bufname("%"), 0, 10) ==# "NERD_tree_"
-    "" in the nerd tree, use the up and down arrow keys for list navigation
-    "noremap <buffer> <down> <down>
-    "noremap <buffer> <up> <up>
-  "endif
-  "if bufname("%") ==# "-MiniBufExplorer-"
-    ""echo 'hi there'
-    ""<c-w><c-j>
-    ""execute "normal \<C-W>\<C-J>"
-  "endif
-"endfunction
 
 " }}}
 " VIMNOTES ================================================================= {{{
@@ -260,9 +241,24 @@ let g:notes_tab_indents = 0
 let g:notes_smart_quotes = 0
 
 " }}}
+" FANCY LAYOUT ============================================================= {{{
+
+call cabbrevplus#Cabbrev('fi', 'FancyLayoutInit')
+call cabbrevplus#Cabbrev('fm', 'FancyLayoutGoto main')
+call cabbrevplus#Cabbrev('fp', 'FancyLayoutGoto pre')
+call cabbrevplus#Cabbrev('fn', 'FancyLayoutGoto notes')
+call cabbrevplus#Cabbrev('ft', 'FancyLayoutNerdTree')
+call cabbrevplus#Cabbrev('help', 'FancyLayoutHelp')
+call cabbrevplus#Cabbrev('fh', 'FancyLayoutHelp')
+
+" }}}
+" VIMRC FOR DRUPAL ========================================================= {{{
+
+call pathogen#infect('~/.drush/vimrc/bundle/{}')
+
+" }}}
 
 
-"call pathogen#infect('~/.drush/vimrc/bundle/{}')
 
 " create a shortcut for adding a space before all opening brackets
 " (useful for CSS format correction)
@@ -290,3 +286,23 @@ let g:notes_smart_quotes = 0
       "\'template_ext': '.html',
       "\'path_html': '~/Dropbox/github/vimwiki/'
 "noremap <F4> : VimwikiAll2HTML<CR>
+
+" Use the arrow keys to move quickly between windows, with possible overrides
+" for particular buffer types
+"autocmd BufEnter * call EnterBuffer()
+"function! EnterBuffer()
+  "noremap <buffer> <left> <c-w><c-h>
+  "noremap <buffer> <right> <c-w><c-l>
+  "noremap <buffer> <down> <c-w><c-j>
+  "noremap <buffer> <up> <c-w><c-k>
+  "if strpart(bufname("%"), 0, 10) ==# "NERD_tree_"
+    "" in the nerd tree, use the up and down arrow keys for list navigation
+    "noremap <buffer> <down> <down>
+    "noremap <buffer> <up> <up>
+  "endif
+  "if bufname("%") ==# "-MiniBufExplorer-"
+    ""echo 'hi there'
+    ""<c-w><c-j>
+    ""execute "normal \<C-W>\<C-J>"
+  "endif
+"endfunction
