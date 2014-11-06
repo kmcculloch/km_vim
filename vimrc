@@ -235,7 +235,7 @@ nnoremap <s-right> :bn<CR>
 " }}}
 " VIMNOTES ================================================================= {{{
 
-let g:notes_directories = ['~/km_vimnotes']
+let g:notes_directories = ['~/km_vimnotes/user']
 let g:notes_suffix = '.txt'
 let g:notes_tab_indents = 0
 let g:notes_smart_quotes = 0

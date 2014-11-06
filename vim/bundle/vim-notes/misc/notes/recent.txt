@@ -1,1 +1,1 @@
-/home/kevinm/km_vimnotes/IDSA To Do.txt
+/home/kevinm/km_vimnotes/user/git cribsheet.txt

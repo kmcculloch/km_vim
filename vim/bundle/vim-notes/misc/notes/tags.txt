@@ -1,0 +1,8 @@
+idsa.dev2:%files	IDSA Reference
+idsa.stg	IDSA Reference
+idsa.stg:%files	IDSA Reference
+idsa.dev3:%files	IDSA Reference
+idsa.dev1	IDSA Reference
+idsa.dev2	IDSA Reference
+idsa.dev3	IDSA Reference
+idsa.dev1:%files	IDSA Reference
