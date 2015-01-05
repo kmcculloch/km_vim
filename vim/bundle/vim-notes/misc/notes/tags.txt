@@ -1,8 +1,12 @@
 idsa.dev2:%files	IDSA Reference
+research.kevinm	Research America
 idsa.stg	IDSA Reference
+idsa.ntstage:%files/styles	IDSA Reference	Research America
 idsa.stg:%files	IDSA Reference
-idsa.dev3:%files	IDSA Reference
+idsa.dev1:%files/styles	IDSA Reference	Research America
+idsa.dev1:%files	IDSA Reference
+research.dev	Research America
 idsa.dev1	IDSA Reference
 idsa.dev2	IDSA Reference
 idsa.dev3	IDSA Reference
-idsa.dev1:%files	IDSA Reference
+idsa.dev3:%files	IDSA Reference

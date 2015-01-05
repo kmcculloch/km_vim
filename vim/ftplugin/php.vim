@@ -4,4 +4,5 @@ iabbrev <buffer> array_search array_search($needle, $haystack)
 iabbrev <buffer> strpos strpos($haystack, $needle[, $offset])
 iabbrev <buffer> str_replace str_replace($search, $replace, $subject)
 iabbrev <buffer> strlen strlen($string)
-
+iabbrev <buffer> entity_metadata_wrapper entity_metadata_wrapper($type, $data = NULL, array $info = array())
+iabbrev <buffer> property_exists property_exists(mixed $class, string $property)

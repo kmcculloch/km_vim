@@ -200,9 +200,10 @@ let g:airline#extensions#tabline#buffer_nr_format = '%s:'
 " NERDTREE ================================================================= {{{
 
 "let g:NERDTreeWinSize=28
-"call cabbrevplus#Cabbrev('nt', 'NERDTree')
+call cabbrevplus#Cabbrev('nt', 'NERDTree')
 "call cabbrevplus#Cabbrev('ntt', 'NERDTreeToggle')
 call cabbrevplus#Cabbrev('nb', 'Bookmark')
+call cabbrevplus#Cabbrev('nc', 'ClearBookmarks')
 let NERDTreeShowHidden=1
 
 " }}}
