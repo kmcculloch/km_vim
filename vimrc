@@ -74,7 +74,7 @@ map <Space> <Leader>
 
 " use the tab key for escape operations, such as cancelling prefix keys
 " (eg. # for count)
-nnoremap <Tab> <Esc>
+nnoremap <tab> <Esc>
 
 " make sure marks move us back to the specified location
 nnoremap ' `
@@ -141,10 +141,10 @@ nnoremap <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> t
 " INSERT MODE MAPPINGS ===================================================== {{{
 
 " exit insert mode and restore cursor position (no move left)
-inoremap <Tab> <Esc>`^
+inoremap <tab> <Esc>`^
 
 " in insert mode, use the Esc key for tabs
-inoremap <Esc> <Tab>
+"inoremap <Esc> <tab>
 
 " use ctrl-u to make a word upper case in insert mode
 inoremap <c-u> <esc>vawgUi
@@ -153,13 +153,13 @@ inoremap <c-u> <esc>vawgUi
 " VISUAL MODE MAPPINGS ===================================================== {{{
 
 " in visual mode, cancel any selection (gV prevents automatic reselection)
-vnoremap <Tab> <Esc>gV
+vnoremap <tab> <Esc>gV
 
 " }}}
 " OPERATOR-PENDING MODE MAPPINGS =========================================== {{{
 
 " cancel any operator-pending command
-onoremap <Tab> <Esc>
+onoremap <tab> <Esc>
 
 " }}}
 " PATHOGEN ================================================================= {{{
