@@ -1,3 +1,4 @@
+" vim: foldmethod=marker
 
 " MOVEMENT MAPPINGS {{{
 " use the leader to move between windows
@@ -25,16 +26,22 @@ nnoremap <Leader>wd :echo winwidth(0)<CR>
 function! FancyLayoutInit() "{{{
   " open the nerd tree
   :NERDTree
+  vertical resize 60
+  set winfixwidth
   " go back to the main window and split vertically
   2wincmd w
   :vsplit
   " go to the new window and split horizontally
   3wincmd w
-  :split
+  vertical resize 87
+  set winfixwidth
+
+  ":split
   " go back to the main window
   2wincmd w
   vertical resize 87
   set winfixwidth
+
   " prevent jumping directly to NerdTree
   nnoremap <Leader>h :FancyLayoutNerdTree<CR>
   let g:fancy_loaded = 1
@@ -50,11 +57,11 @@ endif
 function! FancyLayoutEnter() "{{{
   if g:fancy_loaded
     " resize windows
-    if &ft ==# "nerdtree"
-      vertical resize 50 
-    else
-      vertical resize 87
-    endif
+    "if &ft ==# "nerdtree"
+      "vertical resize 50 
+    "else
+      "vertical resize 87
+    "endif
 
     " prevent direct jumping to NerdTree
     if winnr() == 2
@@ -70,9 +77,9 @@ autocmd WinEnter * :call FancyLayoutEnter()
 function! FancyLayoutLeave() "{{{
   if g:fancy_loaded
     " Condense NerdTree
-    if &ft ==# "nerdtree"
-      vertical resize 28
-    endif
+    "if &ft ==# "nerdtree"
+      "vertical resize 28
+    "endif
   endif
 endfunction
 
@@ -129,8 +136,3 @@ if !exists(':FancyLayoutHelp')
 endif
 "}}}
 
-
-
-":Note
-
-" vim: foldmethod=marker

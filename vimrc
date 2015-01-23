@@ -1,4 +1,5 @@
 " K. McCULLOCH VIMRC
+" vim: foldmethod=marker
 " to inspect local environment:
 " http://vim.wikia.com/wiki/Displaying_the_current_Vim_environment
 
@@ -307,3 +308,4 @@ call pathogen#infect('~/.drush/vimrc/bundle/{}')
     ""execute "normal \<C-W>\<C-J>"
   "endif
 "endfunction
+
