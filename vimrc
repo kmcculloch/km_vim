@@ -2,7 +2,7 @@
 " vim: foldmethod=marker
 " to inspect local environment:
 " http://vim.wikia.com/wiki/Displaying_the_current_Vim_environment
-
+let &rtp = substitute(&rtp, '\.vim\>', 'km_vim\/vim', 'g')
 " OPTIONS ================================================================== {{{
 
 set nocompatible "use Vim (not Vi) option defaults
@@ -237,10 +237,10 @@ nnoremap <s-right> :bn<CR>
 " }}}
 " VIMNOTES ================================================================= {{{
 
-let g:notes_directories = ['~/km_vimnotes/user']
-let g:notes_suffix = '.txt'
-let g:notes_tab_indents = 0
-let g:notes_smart_quotes = 0
+"let g:notes_directories = ['~/km_vimnotes/user']
+"let g:notes_suffix = '.txt'
+"let g:notes_tab_indents = 0
+"let g:notes_smart_quotes = 0
 
 " }}}
 " FANCY LAYOUT ============================================================= {{{

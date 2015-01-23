@@ -28,15 +28,16 @@ function! FancyLayoutInit() "{{{
   :NERDTree
   vertical resize 60
   set winfixwidth
+
   " go back to the main window and split vertically
   2wincmd w
   :vsplit
+
   " go to the new window and split horizontally
   3wincmd w
   vertical resize 87
   set winfixwidth
 
-  ":split
   " go back to the main window
   2wincmd w
   vertical resize 87
@@ -44,6 +45,7 @@ function! FancyLayoutInit() "{{{
 
   " prevent jumping directly to NerdTree
   nnoremap <Leader>h :FancyLayoutNerdTree<CR>
+
   let g:fancy_loaded = 1
 endfunction
 
@@ -106,7 +108,7 @@ endif
 function! FancyLayoutNerdTree() "{{{
   if g:fancy_loaded
     " Go to our destination window so NerdTree files open there
-    call FancyLayoutGoto('pre')
+    call FancyLayoutGoto('main')
     " Go to NerdTree
     call FancyLayoutGoto('tree')
   endif
