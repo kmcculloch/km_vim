@@ -206,6 +206,7 @@ call cabbrevplus#Cabbrev('nt', 'NERDTree')
 call cabbrevplus#Cabbrev('nb', 'Bookmark')
 call cabbrevplus#Cabbrev('nc', 'ClearBookmarks')
 let NERDTreeShowHidden=1
+let NERDTreeShowBookmarks=1
 
 " }}}
 " MINIBUFEXPL ============================================================== {{{

@@ -43,6 +43,9 @@ function! FancyLayoutInit() "{{{
   vertical resize 87
   set winfixwidth
 
+  " go back to the nerd tree
+  1wincmd w
+
   " prevent jumping directly to NerdTree
   nnoremap <Leader>h :FancyLayoutNerdTree<CR>
 
