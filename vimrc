@@ -2,7 +2,7 @@
 " vim: foldmethod=marker
 " to inspect local environment:
 " http://vim.wikia.com/wiki/Displaying_the_current_Vim_environment
-let &rtp = substitute(&rtp, '\.vim\>', 'km_vim\/vim', 'g')
+
 " OPTIONS ================================================================== {{{
 
 set nocompatible "use Vim (not Vi) option defaults
