@@ -30,7 +30,8 @@ set incsearch "see results while typing
 set hlsearch "search matches are highlighted
 set nowrapscan "keep searches from wrapping around the end of the file
 
-set hidden "keep buffers loaded when they are abandoned
+"set hidden "keep buffers loaded when they are abandoned
+set nohidden
 set confirm "prompt for save before unloading a modified buffer
 
 set laststatus=2 "always show the status line
@@ -123,6 +124,12 @@ nnoremap <Leader>i ^i
 " insert a single character at the cursor point
 nnoremap <Leader>r i_<Esc>r
 
+" use the leader to move between windows
+nnoremap <Leader>j <C-W><C-J>
+nnoremap <Leader>k <C-W><C-K>
+nnoremap <Leader>h <C-W><C-H>
+nnoremap <Leader>l <C-W><C-L>
+
 " change contents of parentheses, brackets, quotes, etc.
 nnoremap <Leader>c( vi(c
 nnoremap <Leader>c[ vi[c
@@ -137,6 +144,13 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " when cursor is on word, use F10 to get info about syntax highlighting
 nnoremap <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" Set a given window width to the proper width for code editing
+" 87 = 80 chars + 5 for line numbers + 2 for marks
+nnoremap <Leader>wf :vertical resize 87<CR>:set winfixwidth<CR>
+
+" Display window width
+nnoremap <Leader>wd :echo winwidth(0)<CR>
 
 " }}}
 " INSERT MODE MAPPINGS ===================================================== {{{
@@ -167,6 +181,20 @@ onoremap <tab> <Esc>
 
 call pathogen#infect() "add .vim/bundle/* to runtimepath
 
+" Vim files loaded on startup:
+" plugin/
+" ftdetect/ [rules for setting file types]
+" after/ [deliberately runs after plugin]
+"
+" Vim files loaded on demand:
+" colors/ [loaded when colorscheme is set]
+" ftplugin/ [loaded when filetype is set]
+" indent/ [loaded when filetype is set]
+" syntax/ [loaded when filetype is set]
+" compiler/ [loaded when filetype is set]
+" doc/ [loaded when help is requested]
+" autoload/ [loaded when plugin is needed]
+
 " }}}
 " SHOWMARKS ================================================================ {{{
 
@@ -192,6 +220,7 @@ colorscheme gruvbox
 " }}}
 " AIRLINE ================================================================== {{{
 
+" Turn on airline's tabline extension to use the tabline to display buffers
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -211,27 +240,16 @@ let NERDTreeShowBookmarks=1
 " }}}
 " MINIBUFEXPL ============================================================== {{{
 
-" Note: minibufexpl.vim patched on line 1423
+" Note: minibufexpl.vim patched on line 1423 so that we can use its commands
+" without the buffer itself being open
 
 "let g:miniBufExplBRSplit=0 "put mini buffer on top
 "let g:miniBufExplBuffersNeeded=1000 "suppress buffer window
 let g:miniBufExplAutoStart=0 "only open manually
 
-" expand various buffer movement commands to their MiniBufExpl equivalents
-call cabbrevplus#Cabbrev('bn', 'MBEbn')
-call cabbrevplus#Cabbrev('bp', 'MBEbp')
-call cabbrevplus#Cabbrev('bf', 'MBEbf')
-call cabbrevplus#Cabbrev('bb', 'MBEbb')
-call cabbrevplus#Cabbrev('bd', 'MBEbd')
-call cabbrevplus#Cabbrev('bw', 'MBEbw')
-call cabbrevplus#Cabbrev('bun', 'MBEbun')
-
-" delete buffers rather than quitting windows
-call cabbrevplus#Cabbrev('q', 'MBEbd')
-call cabbrevplus#Cabbrev('wq', 'w')
-
 " use shift-arrow to scroll quickly through buffers
 " note that bp and bn are abbreviated to expand to MiniBufExpl commands
+" by Fancy Layout
 nnoremap <s-left> :bp<CR>
 nnoremap <s-right> :bn<CR>
 
@@ -309,4 +327,14 @@ call pathogen#infect('~/.drush/vimrc/bundle/{}')
     ""execute "normal \<C-W>\<C-J>"
   "endif
 "endfunction
+"
+  " Use the leader with arrows to toss a new window in the arrow's direction
+  "nnoremap <Leader>wk :aboveleft sp<CR>
+  "nnoremap <Leader>wh :aboveleft vsp<CR>
+  "nnoremap <Leader>wj :belowright sp<CR>
+  "nnoremap <Leader>wl :belowright vsp<CR>
+
+  " Equalize window sizes
+  "nnoremap <Leader>w= <c-w>=
+
 

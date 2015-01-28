@@ -1,63 +1,150 @@
 " vim: foldmethod=marker
 
-" MOVEMENT MAPPINGS {{{
-" use the leader to move between windows
-nnoremap <Leader>j <C-W><C-J>
-nnoremap <Leader>k <C-W><C-K>
-nnoremap <Leader>h <C-W><C-H>
-nnoremap <Leader>l <C-W><C-L>
+" Is fancy layout loaded?
+let g:fancy_loaded = 0
 
-" Use the leader with arrows to toss a new window in the arrow's direction
-nnoremap <Leader>wk :aboveleft sp<CR>
-nnoremap <Leader>wh :aboveleft vsp<CR>
-nnoremap <Leader>wj :belowright sp<CR>
-nnoremap <Leader>wl :belowright vsp<CR>
+" FANCY LAYOUT INITIALIZATION {{{
+function! FancyLayoutInit()
+  " Map some new keys for the nerd tree
+  let s = '<SNR>' . s:SID() . '_'
+  call NERDTreeAddKeyMap({ 'key': 'a', 'scope': "FileNode", 'callback': s."FancyLayoutOpenA" })
+  call NERDTreeAddKeyMap({ 'key': 'a', 'scope': "Bookmark", 'callback': s."FancyLayoutOpenBookmarkA" })
+  call NERDTreeAddKeyMap({ 'key': 'ga', 'scope': "FileNode", 'callback': s."FancyLayoutPreviewA" })
+  call NERDTreeAddKeyMap({ 'key': 'ga', 'scope': "Bookmark", 'callback': s."FancyLayoutPreviewA" })
+  call NERDTreeAddKeyMap({ 'key': 'b', 'scope': "FileNode", 'callback': s."FancyLayoutOpenB" })
+  call NERDTreeAddKeyMap({ 'key': 'b', 'scope': "Bookmark", 'callback': s."FancyLayoutOpenBookmarkB" })
+  call NERDTreeAddKeyMap({ 'key': 'gb', 'scope': "FileNode", 'callback': s."FancyLayoutPreviewB" })
+  call NERDTreeAddKeyMap({ 'key': 'gb', 'scope': "Bookmark", 'callback': s."FancyLayoutPreviewB" })
 
-" Equalize window sizes
-nnoremap <Leader>w= <c-w>=
+  " Use our custom quit routines for all window/buffer delete commands
+  call cabbrevplus#Cabbrev('bd', 'FancyLayoutQ')
+  call cabbrevplus#Cabbrev('bw', 'FancyLayoutQ')
+  call cabbrevplus#Cabbrev('bu', 'FancyLayoutQ')
+  call cabbrevplus#Cabbrev('bun', 'FancyLayoutQ')
+  call cabbrevplus#Cabbrev('q', 'FancyLayoutQ')
+  call cabbrevplus#Cabbrev('wq', 'FancyLayoutWQ')
 
-" Set a given window width to the proper width for code editing
-" 87 = 80 chars + 5 for line numbers + 2 for marks
-nnoremap <Leader>wf :vertical resize 87<CR>:set winfixwidth<CR>
-
-" Display window width
-nnoremap <Leader>wd :echo winwidth(0)<CR>
-"}}}
-function! FancyLayoutInit() "{{{
-  " open the nerd tree
+  " open the nerd tree and build the windows
   :NERDTree
-  vertical resize 60
-  set winfixwidth
-
-  " go back to the main window and split vertically
-  2wincmd w
-  :vsplit
-
-  " go to the new window and split horizontally
-  3wincmd w
-  vertical resize 87
-  set winfixwidth
-
-  " go back to the main window
-  2wincmd w
-  vertical resize 87
-  set winfixwidth
-
-  " go back to the nerd tree
-  1wincmd w
-
-  " prevent jumping directly to NerdTree
-  nnoremap <Leader>h :FancyLayoutNerdTree<CR>
+  call FancyLayoutBuildWindows('tree')
 
   let g:fancy_loaded = 1
 endfunction
 
-" Is fancy layout loaded?
-let g:fancy_loaded = 0
-
 if !exists(':FancyLayoutInit')
   command! FancyLayoutInit call FancyLayoutInit()
 endif
+
+"}}}
+" BUILD WINDOWS {{{
+function! FancyLayoutBuildWindows(dest)
+  " Go to window one and close everything else
+  1wincmd w
+  :only
+
+  " Split vertically; we now have two windows
+  :vsplit
+
+  " Split vertically; we now have three windows
+  :vsplit
+
+  " Size and populate window one
+  1wincmd w
+  vertical resize 60
+  set winfixwidth
+  call NERDTreeRender()
+
+  " Size and populate window three
+  3wincmd w
+  :b1
+  vertical resize 87
+  set winfixwidth
+
+  " Size and populate window two
+  2wincmd w
+  :b1
+  vertical resize 87
+  set winfixwidth
+
+  " Position ourselves in the appropriate window
+  call FancyLayoutGoto(a:dest)
+endfunction
+
+"}}}
+" NERD TREE CALLBACKS {{{
+
+function! s:FancyLayoutOpenA(node)
+  call FancyLayoutGoto('main')
+  call FancyLayoutGoto('tree')
+  call a:node.activate({'reuse': 1, 'where': 'p'})
+endfunction
+
+function! s:FancyLayoutOpenB(node)
+  call FancyLayoutGoto('pre')
+  call FancyLayoutGoto('tree')
+  call a:node.activate({'reuse': 1, 'where': 'p'})
+endfunction
+
+function! s:FancyLayoutPreviewA(node)
+  call FancyLayoutGoto('main')
+  call FancyLayoutGoto('tree')
+  call a:node.open({'stay': 1, 'where': 'p', 'keepopen': 1})
+  
+  " Refresh the Airline tabline
+  silent doautocmd BufDelete *
+  silent doautocmd User AirlineToggledOn
+endfunction
+
+function! s:FancyLayoutPreviewB(node)
+  call FancyLayoutGoto('pre')
+  call FancyLayoutGoto('tree')
+  call a:node.open({'stay': 1, 'where': 'p', 'keepopen': 1})
+
+  " Refresh the Airline tabline
+  silent doautocmd BufDelete *
+  silent doautocmd User AirlineToggledOn
+endfunction
+
+function! s:FancyLayoutOpenBookmarkA(bm)
+  call FancyLayoutGoto('main')
+  call FancyLayoutGoto('tree')
+  call a:bm.activate(!a:bm.path.isDirectory ? {'where': 'p'} : {})
+endfunction
+
+function! s:FancyLayoutOpenBookmarkB(bm)
+  call FancyLayoutGoto('pre')
+  call FancyLayoutGoto('tree')
+  call a:bm.activate(!a:bm.path.isDirectory ? {'where': 'p'} : {})
+endfunction
+
+"}}}
+" BUFFER DELETION ROUTINES {{{
+function! FancyLayoutQ()
+  let l:winnr = winnr()
+  if l:winnr ==# 1
+    " This is the nerd tree; do nothing
+  elseif l:winnr ==# 2
+    :MBEbw
+  elseif l:winnr ==# 3
+    :MBEbw
+  elseif l:winnr ==# 4
+    :MBEbw
+  endif
+endfunction
+
+function! FancyLayoutWQ()
+  :w
+  call FancyLayoutQ()
+endfunction
+
+if !exists(':FancyLayoutQ')
+  command! FancyLayoutQ call FancyLayoutQ()
+endif
+
+if !exists(':FancyLayoutWQ')
+  command! FancyLayoutWQ call FancyLayoutWQ()
+endif
+
 "}}}
 function! FancyLayoutEnter() "{{{
   if g:fancy_loaded
@@ -139,5 +226,13 @@ endfunction
 if !exists(':FancyLayoutHelp')
   command! -nargs=1 FancyLayoutHelp call FancyLayoutHelp(<f-args>)
 endif
-"}}}
 
+"}}}
+function s:SID() "{{{
+    if !exists("s:sid")
+        let s:sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
+    endif
+    return s:sid
+endfunction
+
+"}}}
