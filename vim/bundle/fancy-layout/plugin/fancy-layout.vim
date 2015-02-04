@@ -28,6 +28,11 @@ function! FancyLayoutInit()
   :NERDTree
   call FancyLayoutBuildWindows('tree')
 
+  " @todo the above is not taking us to the tree, so go there by default
+  " and jump to the top of the buffer
+  1wincmd w
+  execute 'normal gg'
+
   let g:fancy_loaded = 1
 endfunction
 
