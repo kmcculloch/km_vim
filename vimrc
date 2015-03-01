@@ -277,6 +277,8 @@ call cabbrevplus#Cabbrev('fh', 'FancyLayoutHelp')
 " VIMRC FOR DRUPAL ========================================================= {{{
 
 call pathogen#infect('~/.drush/vimrc/bundle/{}')
+let drupal#phpcs_exec = '/usr/local/bin/phpcs'
+let drupal#phpcs_args = ''
 
 " }}}
 
