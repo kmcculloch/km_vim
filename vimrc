@@ -227,12 +227,20 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_nr_format = '%s:'
 
 " }}}
+" NERDCOMMENTER============================================================= {{{
+
+let g:NERDCustomDelimiters = {
+      \ 'php': {'left': '// ', 'leftAlt': '/*', 'rightAlt': '*/' }
+      \ }
+
+" }}}
 " NERDTREE ================================================================= {{{
 
 "let g:NERDTreeWinSize=28
 call cabbrevplus#Cabbrev('nt', 'NERDTree')
 "call cabbrevplus#Cabbrev('ntt', 'NERDTreeToggle')
 call cabbrevplus#Cabbrev('nb', 'Bookmark')
+"usage :nc bookmark_name
 call cabbrevplus#Cabbrev('nc', 'ClearBookmarks')
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
