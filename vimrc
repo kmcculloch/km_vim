@@ -177,6 +177,12 @@ vnoremap <tab> <Esc>gV
 onoremap <tab> <Esc>
 
 " }}}
+" COMMAND MAPPINGS ========================================================= {{{
+
+" use W to save file as sudo
+cmap W w !sudo tee % >/dev/null<CR>
+
+" }}}
 " PATHOGEN ================================================================= {{{
 
 call pathogen#infect() "add .vim/bundle/* to runtimepath
