@@ -97,6 +97,16 @@ nnoremap K 5k
 nnoremap H 10h
 nnoremap L 10l
 
+" delete movement commands into the null register
+nnoremap d "_d
+
+" delete to the end of the line into the null register
+nnoremap D "_D
+
+" delete single characters into the null register
+nnoremap x v"_d
+nnoremap X hv"_d
+
 " move up or down half a page, then center screen
 nnoremap <Leader>f 24jzz
 nnoremap <Leader>F 24kzz
@@ -169,6 +179,9 @@ inoremap <c-u> <esc>vawgUi
 
 " in visual mode, cancel any selection (gV prevents automatic reselection)
 vnoremap <tab> <Esc>gV
+
+" delete into the null register
+vnoremap D "_d
 
 " }}}
 " OPERATOR-PENDING MODE MAPPINGS =========================================== {{{
