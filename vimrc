@@ -183,6 +183,14 @@ vnoremap <tab> <Esc>gV
 " delete into the null register
 vnoremap D "_d
 
+" duplicate normal mode movement commands
+vnoremap J 5j
+vnoremap K 5k
+vnoremap H 10h
+vnoremap L 10l
+xnoremap <Leader>f 24jzz
+xnoremap <Leader>F 24kzz
+
 " }}}
 " OPERATOR-PENDING MODE MAPPINGS =========================================== {{{
 
