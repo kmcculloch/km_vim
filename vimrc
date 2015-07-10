@@ -122,6 +122,9 @@ nnoremap <Leader>D <Nop>
 nnoremap <Leader>U vawgU
 nnoremap <Leader>u vawgu
 
+" always search in "very magic" mode
+nnoremap / /\v
+
 " clear previous search string
 nnoremap <Leader><Space> :let<Space>@/<Space>=<Space>""<CR>
 
