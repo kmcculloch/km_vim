@@ -207,6 +207,15 @@ onoremap <tab> <Esc>
 cmap W w !sudo tee % >/dev/null<CR>
 
 " }}}
+" CUSTOM AUTOCMDS  ========================================================= {{{
+
+" fold settings.php comments
+augroup settings_php
+  autocmd!
+  autocmd BufRead settings.php setlocal foldmethod=syntax
+augroup END
+
+" }}}
 " PATHOGEN ================================================================= {{{
 
 call pathogen#infect() "add .vim/bundle/* to runtimepath
@@ -311,7 +320,6 @@ let drupal#phpcs_exec = '/usr/local/bin/phpcs'
 let drupal#phpcs_args = ''
 
 " }}}
-
 
 
 " create a shortcut for adding a space before all opening brackets
