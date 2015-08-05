@@ -205,7 +205,7 @@ else
 endif
 
 " KM override: set background color to pure black
-let s:gb.dark0 = ['000000', 16]
+"let s:gb.dark0 = ['000000', 16]
 
 " }}}
 " Highlighting Function: {{{
