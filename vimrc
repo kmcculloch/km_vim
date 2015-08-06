@@ -246,15 +246,30 @@ let g:showmarks_enable=1
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 " }}}
-" GRUVBOX ================================================================== {{{
+" COLORSCHEME ============================================================== {{{
 
-" note: see line 207 of gruvbox.vim for some custom overrides I've made
-" TODO do the overrides in .vimrc instead
-" TODO make a shell script for gruvbox colors in the terminal
+" in general we like a dark background
 set background=dark
+" be sure we're using all of our terminal's 256 colors
+" NOTE: To get the best effect with Gruvbox, run the shell script to
+" set the precise 256 color values that Gruvbox likes
 set t_Co=256
+
+" GRUVBOX
+" This was previously in bundle/gruvbox/colors/gruvbox.vim at line 207:
+" KM override: set background color to pure black
+"let s:gb.dark0 = ['000000', 16]
 let g:gruvbox_italic=0
+
+" SOLARIZED
+let g:solarized_italic=0
+let g:solarized_underline=0
+
+" TURN ON COLORSCHEME OF CHOICE
+"colorscheme desert256
 colorscheme gruvbox
+"colorscheme solarized
+"colorscheme PaperColor
 
 " }}}
 " AIRLINE ================================================================== {{{
