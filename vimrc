@@ -163,7 +163,8 @@ nnoremap <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> t
 nnoremap <Leader>wf :vertical resize 87<CR>:set winfixwidth<CR>
 
 " Display window width
-nnoremap <Leader>wd :echo winwidth(0)<CR>
+nnoremap <Leader>wd :echo 'Window width: ' . winwidth(0)<CR>
+nnoremap <Leader>wn :echo 'Window number: ' . winnr()<CR>
 
 " }}}
 " INSERT MODE MAPPINGS ===================================================== {{{
@@ -204,7 +205,9 @@ onoremap <tab> <Esc>
 " COMMAND MAPPINGS ========================================================= {{{
 
 " use W to save file as sudo
-cmap W w !sudo tee % >/dev/null<CR>
+" commented out; interferes with NerdTREE grepping for words that start with
+" "W". @todo fix?
+"cmap W w !sudo tee % >/dev/null<CR>
 
 " }}}
 " CUSTOM AUTOCMDS  ========================================================= {{{
@@ -320,18 +323,24 @@ nnoremap <s-right> :bn<CR>
 " FANCY LAYOUT ============================================================= {{{
 
 call cabbrevplus#Cabbrev('fi', 'FancyLayoutInit')
-call cabbrevplus#Cabbrev('fm', 'FancyLayoutGoto main')
-call cabbrevplus#Cabbrev('fp', 'FancyLayoutGoto pre')
-call cabbrevplus#Cabbrev('fn', 'FancyLayoutGoto notes')
-call cabbrevplus#Cabbrev('ft', 'FancyLayoutNerdTree')
-call cabbrevplus#Cabbrev('help', 'FancyLayoutHelp')
-call cabbrevplus#Cabbrev('fh', 'FancyLayoutHelp')
+
+" commented out, because not using
+"call cabbrevplus#Cabbrev('fm', 'FancyLayoutGoto main')
+"call cabbrevplus#Cabbrev('fp', 'FancyLayoutGoto pre')
+"call cabbrevplus#Cabbrev('fn', 'FancyLayoutGoto notes')
+"call cabbrevplus#Cabbrev('ft', 'FancyLayoutNerdTree')
+
+" opening help buffer tends to mess up my window scheme
+" generally these days I'm opening help in a different terminal
+"call cabbrevplus#Cabbrev('help', 'FancyLayoutHelp')
+"call cabbrevplus#Cabbrev('fh', 'FancyLayoutHelp')
 
 " }}}
 " VIMRC FOR DRUPAL ========================================================= {{{
 
 call pathogen#infect('~/.drush/vimrc/bundle/{}')
-let drupal#phpcs_exec = '/usr/local/bin/phpcs'
+"let drupal#phpcs_exec = '/usr/local/bin/phpcs'
+let drupal#phpcs_exec = $KM_BASH . '/tools/PHP_CodeSniffer/scripts/phpcs'
 let drupal#phpcs_args = ''
 
 " }}}
