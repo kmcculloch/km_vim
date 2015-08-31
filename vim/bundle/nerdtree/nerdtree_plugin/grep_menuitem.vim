@@ -1,47 +1,42 @@
+" Originally written by scrooloose
+" (http://gist.github.com/205807)
+" p.kevin.mcculloch@gmail.com modifications 8/28/15
+
 if exists("g:loaded_nerdtree_grep_menuitem")
-    finish
+  finish
 endif
 let g:loaded_nerdtree_grep_menuitem = 1
 
-if !executable("grep")
-    finish
-endif
-
 call NERDTreeAddMenuItem({
-    \ 'text': '(g)rep directory',
-    \ 'shortcut': 'g',
-    \ 'callback': 'NERDTreeGrepMenuItem' })
+      \ 'text': '(g)rep directory',
+      \ 'shortcut': 'g',
+      \ 'callback': 'NERDTreeGrep' })
 
-function! NERDTreeGrepMenuItem()
-    let n = g:NERDTreeDirNode.GetSelected()
+function! NERDTreeGrep()
+  let dirnode = g:NERDTreeDirNode.GetSelected()
 
-    let pattern = input("Search Pattern: ")
-    if pattern == ''
-        return
-    endif
+  let pattern = input("Enter the search pattern: ")
+  if pattern == ''
+    echo 'Aborted'
+    return
+  endif
 
-    "use the previous window to jump to the first search result
-    wincmd w
+  " Change our working directory to the path of the NerdTree node.
+  exec 'cd ' . dirnode.path.str()
 
+  " Silently grep. Results will be saved in the Quickfix error list.
+  exec 'silent grep! -rn ' . pattern . ' *'
+      
+  " The "silent" key can mess up the screen. Clear and redraw.
+  redraw!
 
-    let old_shellpipe = &shellpipe
-
-    try
-        "a hack for *nix to ensure the grep output isnt echoed in vim
-        let &shellpipe='&>'
-    
-        exec 'silent grep -r ' . pattern . ' ' . n.path.str()
-    finally
-        let &shellpipe = old_shellpipe
-    endtry
-
-    let hits = len(getqflist())
-    if hits == 0
-        redraw
-        echo "No hits"
-    elseif hits > 1
-        copen
-        wincmd p
-    endif
+  " How long is the Quickfix error list?
+  let hits = len(getqflist())
+  if hits == 0
+    echo "No hits"
+  elseif hits > 1
+    " Open the Quickfix buffer
+    copen
+  endif
 
 endfunction
