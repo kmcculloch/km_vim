@@ -338,9 +338,15 @@ call cabbrevplus#Cabbrev('fi', 'FancyLayoutInit')
 " }}}
 " VIMRC FOR DRUPAL ========================================================= {{{
 
-call pathogen#infect('~/.drush/vimrc/bundle/{}')
-"let drupal#phpcs_exec = '/usr/local/bin/phpcs'
-let drupal#phpcs_exec = $KM_BASH . '/tools/PHP_CodeSniffer/scripts/phpcs'
+" Use composer on a local system to install Drupal coder project:
+" composer global require drupal/coder
+" This will install the PHP Code Sniffer, but it can also be installed
+" directly:
+" composer global require "squizlabs/php_codesniffer=*"
+" To see all composer projects installed:
+" composer global show -i
+
+" Can't remember why I did this
 let drupal#phpcs_args = ''
 
 " }}}
