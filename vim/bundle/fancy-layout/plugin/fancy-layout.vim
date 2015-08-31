@@ -24,14 +24,8 @@ function! FancyLayoutInit()
   call cabbrevplus#Cabbrev('q', 'FancyLayoutQ')
   call cabbrevplus#Cabbrev('wq', 'FancyLayoutWQ')
 
-  " open the nerd tree and build the windows
-  :NERDTree
-  call FancyLayoutBuildWindows('tree')
-
-  " @todo the above is not taking us to the tree, so go there by default
-  " and jump to the top of the buffer
-  1wincmd w
-  execute 'normal gg'
+  " Open the nerd tree and build the windows
+  call FancyLayoutBuildWindows()
 
   let g:fancy_loaded = 1
 endfunction
@@ -42,9 +36,9 @@ endif
 
 "}}}
 " BUILD WINDOWS {{{
-function! FancyLayoutBuildWindows(dest)
-  " Go to window one and close everything else
-  1wincmd w
+function! FancyLayoutBuildWindows()
+  " Open the NERDTree and close everything else
+  :NERDTree
   :only
 
   " Split vertically; we now have two windows
@@ -53,7 +47,7 @@ function! FancyLayoutBuildWindows(dest)
   " Split vertically; we now have three windows
   :vsplit
 
-  " Size and populate window one
+  " Size and populate the NERDTree
   1wincmd w
   vertical resize 60
   set winfixwidth
@@ -71,8 +65,12 @@ function! FancyLayoutBuildWindows(dest)
   vertical resize 87
   set winfixwidth
 
-  " Position ourselves in the appropriate window
-  call FancyLayoutGoto(a:dest)
+  " Go back to the NERDTree
+  1wincmd w
+  " If we want to jump to the top of the buffer, uncomment here. Otherwise
+  " we'll land at the top of the files list.
+  "execute 'normal gg'
+
 endfunction
 
 "}}}
@@ -153,7 +151,8 @@ endif
 "}}}
 function! FancyLayoutEnter() "{{{
   if g:fancy_loaded
-    " resize windows
+    " auto-resize windows as we move
+    " commented out; generally more of a distraction than a help
     "if &ft ==# "nerdtree"
       "vertical resize 50 
     "else
@@ -215,7 +214,8 @@ endif
 "}}}
 function! FancyLayoutHelp(topic) "{{{
   if g:fancy_loaded
-    call FancyLayoutGoto('notes')
+    "call FancyLayoutGoto('notes')
+    3wincmd w
     if &ft ==# 'help'
       execute 'help ' . a:topic
     else
