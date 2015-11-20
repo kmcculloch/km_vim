@@ -221,7 +221,7 @@ augroup END
 " }}}
 " PATHOGEN ================================================================= {{{
 
-call pathogen#infect() "add .vim/bundle/* to runtimepath
+"call pathogen#infect() "add .vim/bundle/* to runtimepath
 
 " Vim files loaded on startup:
 " plugin/
@@ -236,6 +236,9 @@ call pathogen#infect() "add .vim/bundle/* to runtimepath
 " compiler/ [loaded when filetype is set]
 " doc/ [loaded when help is requested]
 " autoload/ [loaded when plugin is needed]
+
+" try unbundle instead
+runtime vim-unbundle/plugin/unbundle.vim
 
 " }}}
 " SHOWMARKS ================================================================ {{{
