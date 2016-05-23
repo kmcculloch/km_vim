@@ -66,6 +66,9 @@ set switchbuf=useopen "buffer exists in open window, jump there
 set modeline
 set modelines=5
 
+" to set paste, go into insert mode then use the F2 key
+set pastetoggle=<F2>
+
 " }}}
 " NORMAL MODE MAPPINGS ===================================================== {{{
 
